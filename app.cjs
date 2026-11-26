@@ -1,0 +1,14 @@
+require('dotenv').config();
+const express=require('express');
+const swaggerUi=require('swagger-ui-express');
+const spec=require('./docs/openapi.json');
+const routes=require('./src/routes/api.cjs');
+const {notFound,errorHandler}=require('./src/middleware/error.cjs');
+const app=express();
+app.disable('x-powered-by');
+app.use(express.json({limit:'32kb'}));
+app.get('/health',(req,res)=>res.json({success:true,data:{status:'ok'}}));
+app.use('/docs',swaggerUi.serve,swaggerUi.setup(spec));
+app.use('/api',routes);
+app.use(notFound);app.use(errorHandler);
+module.exports=app;

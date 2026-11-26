@@ -1,0 +1,14 @@
+const express=require('express');
+const router=express.Router();
+const auth=require('../controllers/auth.cjs');
+const pengaduan=require('../controllers/pengaduan.cjs');
+const {authenticate}=require('../middleware/auth.cjs');
+router.post('/auth/login',auth.login);
+router.use(authenticate);
+router.get('/pengaduan',pengaduan.list);
+router.get('/pengaduan/:id',pengaduan.detail);
+router.post('/pengaduan',pengaduan.create);
+router.put('/pengaduan/:id',pengaduan.edit);
+router.patch('/pengaduan/:id/status',pengaduan.status);
+router.delete('/pengaduan/:id',pengaduan.remove);
+module.exports=router;

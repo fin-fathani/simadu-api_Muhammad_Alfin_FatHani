@@ -1,0 +1,351 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SIMADU API - UTS WSE",
+    "version": "1.0.0",
+    "description": "Pengaduan mahasiswa. Login demo: mhs1/Mahasiswa123!, mhs2/Mahasiswa456!, admin/Admin123! (hanya untuk latihan lokal)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login dan dapatkan JWT",
+        "responses": {
+          "200": {
+            "description": "Bearer token"
+          },
+          "400": {
+            "description": "Format input salah"
+          },
+          "401": {
+            "description": "Kredensial salah"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pengaduan": {
+      "get": {
+        "summary": "Daftar pengaduan menurut role",
+        "responses": {
+          "200": {
+            "description": "Berhasil"
+          },
+          "400": {
+            "description": "Permintaan salah"
+          },
+          "401": {
+            "description": "Tidak terautentikasi"
+          },
+          "403": {
+            "description": "Akses ditolak"
+          },
+          "404": {
+            "description": "Tidak ditemukan"
+          },
+          "500": {
+            "description": "Kesalahan server"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Mahasiswa membuat pengaduan",
+        "responses": {
+          "201": {
+            "description": "Berhasil dibuat"
+          },
+          "400": {
+            "description": "Input tidak valid"
+          },
+          "401": {
+            "description": "Token tidak valid"
+          },
+          "403": {
+            "description": "Bukan mahasiswa"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PengaduanInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pengaduan/{id}": {
+      "get": {
+        "summary": "Detail pengaduan",
+        "responses": {
+          "200": {
+            "description": "Berhasil"
+          },
+          "400": {
+            "description": "Permintaan salah"
+          },
+          "401": {
+            "description": "Tidak terautentikasi"
+          },
+          "403": {
+            "description": "Akses ditolak"
+          },
+          "404": {
+            "description": "Tidak ditemukan"
+          },
+          "500": {
+            "description": "Kesalahan server"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "Ubah pengaduan milik sendiri jika diajukan",
+        "responses": {
+          "200": {
+            "description": "Berhasil"
+          },
+          "400": {
+            "description": "Permintaan salah"
+          },
+          "401": {
+            "description": "Tidak terautentikasi"
+          },
+          "403": {
+            "description": "Akses ditolak"
+          },
+          "404": {
+            "description": "Tidak ditemukan"
+          },
+          "500": {
+            "description": "Kesalahan server"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PengaduanInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Hapus pengaduan milik sendiri jika diajukan",
+        "responses": {
+          "200": {
+            "description": "Berhasil"
+          },
+          "400": {
+            "description": "Permintaan salah"
+          },
+          "401": {
+            "description": "Tidak terautentikasi"
+          },
+          "403": {
+            "description": "Akses ditolak"
+          },
+          "404": {
+            "description": "Tidak ditemukan"
+          },
+          "500": {
+            "description": "Kesalahan server"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/api/pengaduan/{id}/status": {
+      "patch": {
+        "summary": "Admin ubah status diajukan→diproses→selesai",
+        "responses": {
+          "200": {
+            "description": "Berhasil"
+          },
+          "400": {
+            "description": "Permintaan salah"
+          },
+          "401": {
+            "description": "Tidak terautentikasi"
+          },
+          "403": {
+            "description": "Akses ditolak"
+          },
+          "404": {
+            "description": "Tidak ditemukan"
+          },
+          "500": {
+            "description": "Kesalahan server"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusInput"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Login": {
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "mhs1"
+          },
+          "password": {
+            "type": "string",
+            "example": "Mahasiswa123!"
+          }
+        }
+      },
+      "PengaduanInput": {
+        "type": "object",
+        "required": [
+          "judul",
+          "kategori",
+          "deskripsi"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "judul": {
+            "type": "string",
+            "example": "Wifi perpustakaan bermasalah"
+          },
+          "kategori": {
+            "type": "string",
+            "enum": [
+              "Fasilitas",
+              "Akademik",
+              "TI"
+            ]
+          },
+          "deskripsi": {
+            "type": "string",
+            "example": "Koneksi wifi terputus-putus"
+          }
+        }
+      },
+      "StatusInput": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "diproses",
+              "selesai"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+@base = http://localhost:4000
+### 01 Login mhs1 (salin token ke variabel mhsToken secara manual)
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{"username":"mhs1","password":"Mahasiswa123!"}
+### 02 Login gagal
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{"username":"mhs1","password":"salah"}
+### 03 Akses tanpa token
+GET {{base}}/api/pengaduan
+### 04 Token invalid
+GET {{base}}/api/pengaduan
+Authorization: Bearer token-salah
+### 05 Tambah pengaduan (isi token terlebih dahulu)
+POST {{base}}/api/pengaduan
+Authorization: Bearer {{mhsToken}}
+Content-Type: application/json
+
+{"judul":"Wifi bermasalah","kategori":"TI","deskripsi":"Wifi sering terputus"}
+### 06 Lihat milik sendiri
+GET {{base}}/api/pengaduan/1
+Authorization: Bearer {{mhsToken}}
+### 07 Lihat pengaduan milik mahasiswa lain
+GET {{base}}/api/pengaduan/2
+Authorization: Bearer {{mhsToken}}
+### 08 Mahasiswa coba ubah status
+PATCH {{base}}/api/pengaduan/1/status
+Authorization: Bearer {{mhsToken}}
+Content-Type: application/json
+
+{"status":"diproses"}
+### 09 Admin lihat semua (isi adminToken setelah login admin)
+GET {{base}}/api/pengaduan
+Authorization: Bearer {{adminToken}}
+### 10 Admin ubah status
+PATCH {{base}}/api/pengaduan/1/status
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{"status":"diproses"}
+### 11 Field wajib kosong
+POST {{base}}/api/pengaduan
+Authorization: Bearer {{mhsToken}}
+Content-Type: application/json
+
+{"judul":"","kategori":"TI","deskripsi":"Tes"}
+### 12 Tidak ditemukan
+GET {{base}}/api/pengaduan/999999
+Authorization: Bearer {{mhsToken}}
+### 13 PUT pengaduan baru milik sendiri (sesuaikan id)
+PUT {{base}}/api/pengaduan/3
+Authorization: Bearer {{mhsToken}}
+Content-Type: application/json
+
+{"judul":"Wifi perpustakaan","kategori":"TI","deskripsi":"Koneksi tidak stabil"}
+### 14 DELETE pengaduan baru milik sendiri (sesuaikan id)
+DELETE {{base}}/api/pengaduan/3
+Authorization: Bearer {{mhsToken}}
